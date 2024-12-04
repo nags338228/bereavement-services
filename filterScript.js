@@ -120,8 +120,7 @@ $(document).ready(function () {
           const titleElement = document.createElement('h2');
           titleElement.textContent = item.Title;
 
-          articleWrapper.appendChild(titleElement); // Append <div> to <article>
-          article.appendChild(articleWrapper); // Append <h2> to <article>
+          articleWrapper.appendChild(titleElement); // Append <div class='title-post-wrapper'> to <div class='title-post'>
 
           if (item.hasOwnProperty('Content')) {
             const contentElement = document.createElement('div');
@@ -131,6 +130,7 @@ $(document).ready(function () {
             articleWrapper.appendChild(contentElement); // Append <div class='title-content'> to <div class='title-post-wrapper'>
           }
 
+          article.appendChild(articleWrapper); // Append <div class='title-post'> to <article>
           // Finally, append all the data to article tag.
           listContent.appendChild(article);
         });
