@@ -1,4 +1,4 @@
-$(document).ready(function () {
+window.onload = function () {
   const dropdownKeys = [
     { key: "Who has died?", selector: '.who-has-died select' },
     { key: "Circumstances of death", selector: '.circumstances-death select' },
@@ -176,4 +176,4 @@ $(document).ready(function () {
 
   // Initialize the data fetch on page load
   fetchData();
-});
+}
