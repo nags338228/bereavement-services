@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+		<title>JavaScript</title>
+    <link rel="stylesheet" href="./style.css" type="text/css">
+    <script src="/jquery-1.9.1.min.js"></script>
+    <script src="/filterScript.js"></script>
+	</head>
+	<body>
+		<section id="body-wrapper">
+			<section class="categoryFilterWrapper">
+				<div class="content categoryFilterContent">
+					<!-- Start of Who has died filter-->
+					<fieldset class="groupedFilters who-has-died">
+						<h3>Who has died?</h3>
+						<select>
+							<option value="--">All</option>
+						</select>
+					</fieldset>
+					<!-- End of Who has died filter-->
+
+					<!-- Start of Circumstances of death filter-->
+					<fieldset class="groupedFilters circumstances-death">
+						<h3>Circumstances of death</h3>
+						<select>
+							<option value="--">All</option>
+						</select>
+					</fieldset>
+					<!-- End of Circumstances of death filter-->
+
+					<!-- Start of Age of person needing support filter-->
+					<fieldset class="groupedFilters age-person-needing-support">
+						<h3>Age of person needing support</h3>
+						<select>
+							<option value="--">All</option>
+						</select>
+					</fieldset>
+					<!-- End of Age of person needing support filter-->
+
+					<!-- Start of Type of Support filter-->
+					<fieldset class="groupedFilters type-support">
+						<h3>Type of Support</h3>
+						<select>
+							<option value="--">All</option>
+						</select>
+					</fieldset>
+					<!-- End of Type of Support filter-->
+
+					<!-- Start of Location filter-->
+					<fieldset class="groupedFilters location">
+						<h3>Location</h3>
+						<select>
+							<option value="--">All</option>
+						</select>
+					</fieldset>
+					<!-- End of Location filter-->
+				</div>
+				<button id="clear-filters" class="clear-filters-button">Clear All Filters</button>
+
+			</section>
+
+			<div class="content listContent">
+				<article class="title-post">Dummy content</article>
+			</div>
+		</section>
+	</body>
+</html>
