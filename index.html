@@ -8,10 +8,10 @@
     <link rel="manifest" href="/favicon/site.webmanifest">
 		<title>JavaScript</title>
     <link rel="stylesheet" href="./style.css" type="text/css">
-    <script src="/filterScript.js"></script>
+    <script src="/filterScript.min.js"></script>
 	</head>
 	<body>
-		<section id="body-wrapper">
+		<div id="body-wrapper">
 			<section class="categoryFilterWrapper">
 				<div class="content categoryFilterContent">
 					<!-- Start of Who has died filter-->
@@ -62,9 +62,13 @@
 				<button id="clear-filters" class="clear-filters-button">Clear All Filters</button>
 
 			</section>
-
+			<div class="results-wrapper">
+				<div class="total-results">
+					Total Results: <span>0</span>
+				</div>
+			</div>
 			<div class="content listContent">
-				<article class="title-post">Dummy content</article>
+				<article class="title-post">No results found</article>
 			</div>
 		</section>
 	</body>

@@ -1,14 +1,24 @@
 window.onload = function () {
+  // Dropdown selectors
+  const dropDownSelectors = {
+    'whoDied': '.who-has-died select',
+    'circumstancesDeath': '.circumstances-death select',
+    'agePerson': '.age-person-needing-support select',
+    'typeSupport': '.type-support select',
+    'location': '.location select'
+  };
+
+  // Data from json file and its headers
   const dropdownKeys = [
-    { key: "Who has died?", selector: '.who-has-died select' },
-    { key: "Circumstances of death", selector: '.circumstances-death select' },
-    { key: "Age of person needing support", selector: '.age-person-needing-support select' },
-    { key: "Type of support", selector: '.type-support select' },
-    { key: "Location", selector: '.location select' }
+    { key: "Who has died?", selector: dropDownSelectors.whoDied },
+    { key: "Circumstances of death", selector: dropDownSelectors.circumstancesDeath },
+    { key: "Age of person needing support", selector: dropDownSelectors.agePerson },
+    { key: "Type of support", selector: dropDownSelectors.typeSupport },
+    { key: "Location", selector: dropDownSelectors.location }
   ];
 
   let jsonData = []; // To hold the fetched data
-
+  const totalResults = document.querySelector('.total-results span');
   // Fetch the JSON file and populate the dropdowns
   async function fetchData() {
     try {
@@ -25,7 +35,7 @@ window.onload = function () {
         if (dropdownElement) {
           const mergedOptions = [
             ...new Set(
-              data.flatMap(item => item[key] || [])
+              data.flatMap(item => item[key] || []).sort()
             )
           ];
           populateDropdown(dropdownElement, mergedOptions);
@@ -34,6 +44,7 @@ window.onload = function () {
 
       // Display all data initially
       displayResults(jsonData);
+      totalResults.innerHTML = Object.keys(jsonData).length;
     } catch (error) {
       console.error('Error fetching or processing the data:', error);
       showError('Error loading data, please try again later.');
@@ -90,6 +101,7 @@ window.onload = function () {
       });
 
       displayResults(filteredData);
+      totalResults.innerHTML = Object.keys(filteredData).length;
     } catch (error) {
       console.error('Error filtering results:', error);
       showError('Error filtering results, please try again.');
