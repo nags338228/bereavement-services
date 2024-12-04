@@ -64,6 +64,7 @@ The JSON data consists of an array of service objects, each with several propert
 [
 	{
 		"Title": "*Samaritans - Urgent Help",
+		"Content": "<p>Samaritans is a registered charity aimed at providing emotional support to anyone in emotional distress, struggling to cope, or at risk of suicide throughout the United Kingdom and Ireland, often through their telephone helpline.</p>",
 		"Who has died?": [
 			"Friend/colleague",
 			"Unborn baby",

@@ -40,6 +40,13 @@ $(document).ready(function () {
     }
   }
 
+  // Function to sanitize HTML content
+  function sanitizeHTML(content) {
+    const template = document.createElement('template');
+    template.innerHTML = content;
+    return template.content.cloneNode(true);
+  }
+
   // Function to populate dropdown options
   function populateDropdown(element, options) {
     try {
@@ -104,18 +111,28 @@ $(document).ready(function () {
         listContent.appendChild(noResults);
       } else {
         data.forEach(item => {
-          const result = document.createElement('article');
-          result.className = 'title-post';
+          const article = document.createElement('article');
+          article.className = 'title-post';
+
+          const articleWrapper = document.createElement('div');
+          articleWrapper.className = 'title-post-wrapper';
 
           const titleElement = document.createElement('h2');
           titleElement.textContent = item.Title;
 
-          const contentElement = document.createElement('p');
-          contentElement.textContent = item.Content;
+          articleWrapper.appendChild(titleElement); // Append <div> to <article>
+          article.appendChild(articleWrapper); // Append <h2> to <article>
 
-          result.appendChild(titleElement); // Append <h2> to <article>
-          result.appendChild(contentElement); // Append <p> to <article>
-          listContent.appendChild(result);
+          if (item.hasOwnProperty('Content')) {
+            const contentElement = document.createElement('div');
+            contentElement.className = 'title-content';
+            const sanitizedContent = sanitizeHTML(item.Content);
+            contentElement.appendChild(sanitizedContent);
+            articleWrapper.appendChild(contentElement); // Append <div class='title-content'> to <div class='title-post-wrapper'>
+          }
+
+          // Finally, append all the data to article tag.
+          listContent.appendChild(article);
         });
       }
     } catch (error) {
@@ -160,3 +177,22 @@ $(document).ready(function () {
   // Initialize the data fetch on page load
   fetchData();
 });
+
+
+
+// Render content dynamically based on filtered results
+function renderContent(data) {
+  const contentContainer = document.querySelector('.listContent');
+  contentContainer.innerHTML = ''; // Clear previous content
+
+  data.forEach((item) => {
+    const articleElement = document.createElement('article');
+    articleElement.classList.add('title-post');
+    const titleElement = document.createElement('h2');
+    titleElement.textContent = item.Title;
+    // Insert HTML content as is
+    articleElement.innerHTML = item.Content;
+
+    contentContainer.appendChild(articleElement);
+  });
+}
