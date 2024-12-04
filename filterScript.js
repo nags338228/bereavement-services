@@ -177,22 +177,3 @@ $(document).ready(function () {
   // Initialize the data fetch on page load
   fetchData();
 });
-
-
-
-// Render content dynamically based on filtered results
-function renderContent(data) {
-  const contentContainer = document.querySelector('.listContent');
-  contentContainer.innerHTML = ''; // Clear previous content
-
-  data.forEach((item) => {
-    const articleElement = document.createElement('article');
-    articleElement.classList.add('title-post');
-    const titleElement = document.createElement('h2');
-    titleElement.textContent = item.Title;
-    // Insert HTML content as is
-    articleElement.innerHTML = item.Content;
-
-    contentContainer.appendChild(articleElement);
-  });
-}
