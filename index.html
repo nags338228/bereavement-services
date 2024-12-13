@@ -7,8 +7,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="manifest" href="/favicon/site.webmanifest">
 		<title>JavaScript</title>
-    <link rel="stylesheet" href="./style.css" type="text/css">
-    <script src="/filterScript.min.js"></script>
+    <link rel="stylesheet" href="./style.css" type="text/css" />
+    <script src="/filterScript.js"></script>
 	</head>
 	<body>
 		<div id="body-wrapper">
@@ -68,8 +68,23 @@
 				</div>
 			</div>
 			<div class="content listContent">
-				<article class="title-post">No results found</article>
+				<!-- <article class="title-post">No results found</article> -->
+				<div class="pagination"></div>
+
+				<div class="container">
+					<!-- National Section -->
+					<div class="section national-section">
+						<h2>National</h2>
+						<div class="national-section-wrapper"></div>
+					</div>
+					<!-- Local to You Section -->
+					<div class="section local-section">
+            <h2>Local to you</h2>
+						<div class="local-section-wrapper"></div>
+					</div>
+				</div>
+				
 			</div>
-		</section>
+		</div>
 	</body>
 </html>

@@ -3,3 +3,79 @@
 	margin: 0 15px 10px 0;
 	flex: 1;
 }
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f5f5f5;
+	margin: 0;
+	padding: 0;
+}
+.container {
+	display: flex;
+	justify-content: space-between;
+	padding: 20px;
+}
+
+.section {
+	width: 48%;
+	padding: 20px;
+	margin: 20px;
+}
+
+.section h2 {
+	margin-top: 0;
+	font-size: 1.5rem;
+	color: #333;
+}
+
+.card {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: 1px solid #e0e0e0;
+	border-radius: 20px;
+	/* padding: 15px; */
+	margin: 10px 0;
+	transition: box-shadow 0.2s ease;
+	align-items: stretch; /* Ensures equal height alignment */
+}
+
+.card:hover {
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+	margin: 0;
+	font-size: 1.2rem;
+	color: #000;
+}
+
+.card p {
+	margin: 5px 0 0 0;
+	font-size: 0.9rem;
+	color: #555;
+}
+
+.card .arrow {
+	font-size: 1.5rem;
+	color: #999;
+	border-radius: 0px 20px 20px 0px;
+	background: #f0ebeb;
+	padding: 23px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.section.national-section {
+	border-right: 2px solid #f0ebeb;
+}
+.section .card {
+	background-color: #fff;
+}
+.card-data {
+	width: 90%;
+	flex: 1;
+	padding: 30px;
+}
+.pagination {
+	text-align: center;
+}

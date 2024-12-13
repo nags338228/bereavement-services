@@ -1,11 +1,11 @@
 window.onload = function () {
   // Dropdown selectors
   const dropDownSelectors = {
-    'whoDied': '.who-has-died select',
-    'circumstancesDeath': '.circumstances-death select',
-    'agePerson': '.age-person-needing-support select',
-    'typeSupport': '.type-support select',
-    'location': '.location select'
+    whoDied: '.who-has-died select',
+    circumstancesDeath: '.circumstances-death select',
+    agePerson: '.age-person-needing-support select',
+    typeSupport: '.type-support select',
+    location: '.location select'
   };
 
   // Data from json file and its headers
@@ -18,7 +18,12 @@ window.onload = function () {
   ];
 
   let jsonData = []; // To hold the fetched data
-  const totalResults = document.querySelector('.total-results span');
+  let filteredData = []; // To hold the filtered data
+  let currentPage = 1; // Tracks the current page
+  const itemsPerPage = 20; // Number of items per page
+  const visiblePages = 9; // Number of pages to display at a time
+  const totalResults = document.querySelector('.total-results span'); // Total count of results
+
   // Fetch the JSON file and populate the dropdowns
   async function fetchData() {
     try {
@@ -28,34 +33,26 @@ window.onload = function () {
       }
       const data = await response.json();
       jsonData = data; // Store the fetched data
+      filteredData = data; // Initially, no filter, so filtered data is same as original
 
-      // Populate dropdowns with unique options from JSON
+      // Populate dropdowns with unique options
       dropdownKeys.forEach(({ key, selector }) => {
         const dropdownElement = document.querySelector(selector);
         if (dropdownElement) {
-          const mergedOptions = [
-            ...new Set(
-              data.flatMap(item => item[key] || []).sort()
-            )
-          ];
+          const mergedOptions = [...new Set(data.flatMap(item => item[key] || []))];
           populateDropdown(dropdownElement, mergedOptions);
         }
       });
 
-      // Display all data initially
-      displayResults(jsonData);
+      // Display the first page of results
+      const firstPageData = paginate(filteredData, currentPage, itemsPerPage);
+      displayResults(firstPageData);
+      setupPagination(filteredData.length);
       totalResults.innerHTML = Object.keys(jsonData).length;
     } catch (error) {
       console.error('Error fetching or processing the data:', error);
       showError('Error loading data, please try again later.');
     }
-  }
-
-  // Function to sanitize HTML content
-  function sanitizeHTML(content) {
-    const template = document.createElement('template');
-    template.innerHTML = content;
-    return template.content.cloneNode(true);
   }
 
   // Function to populate dropdown options
@@ -74,19 +71,10 @@ window.onload = function () {
     }
   }
 
-  // Attach change event listeners to all dropdowns
-  dropdownKeys.forEach(({ selector }) => {
-    const dropdownElement = document.querySelector(selector);
-    if (dropdownElement) {
-      dropdownElement.addEventListener('change', filterResults);
-    }
-  });
-
-  // Function to filter results based on dropdown selections
+  // Function to filter results based on selected dropdown values
   function filterResults() {
     try {
       const filters = {};
-
       dropdownKeys.forEach(({ key, selector }) => {
         const selectedValue = document.querySelector(selector).value;
         if (selectedValue !== '--') { // Only include selected filters that aren't "All"
@@ -94,13 +82,18 @@ window.onload = function () {
         }
       });
 
-      const filteredData = jsonData.filter(item => {
+      // Apply filters to data
+      filteredData = jsonData.filter(item => {
         return Object.entries(filters).every(([key, value]) => {
           return item[key] && item[key].includes(value);
         });
       });
 
-      displayResults(filteredData);
+      // Reset to the first page and display filtered data
+      currentPage = 1;
+      const firstPageData = paginate(filteredData, currentPage, itemsPerPage);
+      displayResults(firstPageData);
+      setupPagination(filteredData.length);
       totalResults.innerHTML = Object.keys(filteredData).length;
     } catch (error) {
       console.error('Error filtering results:', error);
@@ -108,44 +101,53 @@ window.onload = function () {
     }
   }
 
-  // Function to display results
+  // Function to paginate the data
+  function paginate(data, page, itemsPerPage) {
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return data.slice(startIndex, endIndex);
+  }
+
+  // Function to display the results
   function displayResults(data) {
     try {
-      const listContent = document.querySelector('.listContent');
-      if (!listContent) throw new Error('List content element not found');
+      const nationalSection = document.querySelector('.national-section-wrapper');
+      const localSection = document.querySelector('.local-section-wrapper');
 
-      listContent.innerHTML = ''; // Clear previous results
+      if (!nationalSection || !localSection) {
+        throw new Error('Section elements not found in the DOM');
+      }
+
+      nationalSection.innerHTML = '';
+      localSection.innerHTML = '';
 
       if (data.length === 0) {
-        const noResults = document.createElement('article');
-        noResults.className = 'title-post';
-        noResults.textContent = 'No results found';
-        listContent.appendChild(noResults);
+        nationalSection.innerHTML = '<div class="no-results">No results found</div>';
+        localSection.innerHTML = '<div class="no-results">No results found</div>';
       } else {
+        let nationalHTML = '';
+        let localHTML = '';
+
         data.forEach(item => {
-          const article = document.createElement('article');
-          article.className = 'title-post';
+          const cardHTML = `
+            <div class="card">
+              <div class="card-data">
+                <h3>${item.Title}</h3>
+                <p>${item.Content || 'No description available.'}</p>
+              </div>
+              <div class="arrow">&gt;</div>
+            </div>
+          `;
 
-          const articleWrapper = document.createElement('div');
-          articleWrapper.className = 'title-post-wrapper';
-
-          const titleElement = document.createElement('h2');
-          titleElement.textContent = item.Title;
-
-          articleWrapper.appendChild(titleElement); // Append <div class='title-post-wrapper'> to <div class='title-post'>
-
-          if (item.hasOwnProperty('Content')) {
-            const contentElement = document.createElement('div');
-            contentElement.className = 'title-content';
-            const sanitizedContent = sanitizeHTML(item.Content);
-            contentElement.appendChild(sanitizedContent);
-            articleWrapper.appendChild(contentElement); // Append <div class='title-content'> to <div class='title-post-wrapper'>
+          if (item.Location && item.Location.length > 0) {
+            localHTML += cardHTML;
+          } else {
+            nationalHTML += cardHTML;
           }
-
-          article.appendChild(articleWrapper); // Append <div class='title-post'> to <article>
-          // Finally, append all the data to article tag.
-          listContent.appendChild(article);
         });
+
+        localSection.innerHTML = localHTML;
+        nationalSection.innerHTML = nationalHTML;
       }
     } catch (error) {
       console.error('Error displaying results:', error);
@@ -153,11 +155,60 @@ window.onload = function () {
     }
   }
 
-  // Function to display error messages in the UI
+  // Function to setup pagination
+  function setupPagination(totalItems) {
+    const paginationWrapper = document.querySelector('.pagination');
+    if (!paginationWrapper) {
+      throw new Error('Pagination wrapper not found in the DOM');
+    }
+
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const rangeStart = Math.max(1, currentPage - Math.floor(visiblePages / 2));
+    const rangeEnd = Math.min(totalPages, rangeStart + visiblePages - 1);
+
+    let paginationHTML = '';
+
+    // Create "Back" button
+    if (currentPage > 1) {
+      paginationHTML += `<button class="page-btn back-btn" data-page="${currentPage - 1}">&lt; Back</button>`;
+    }
+
+    // Display the page numbers
+    for (let i = rangeStart; i <= rangeEnd; i++) {
+      const activeClass = i === currentPage ? 'active' : '';
+      paginationHTML += `<button class="page-btn ${activeClass}" data-page="${i}">${i}</button>`;
+    }
+
+    // Create "Next" button
+    if (currentPage < totalPages) {
+      paginationHTML += `<button class="page-btn next-btn" data-page="${currentPage + 1}">Next &gt;</button>`;
+    }
+
+    paginationWrapper.innerHTML = paginationHTML;
+    attachPaginationEvents();
+  }
+
+  // Attach pagination events
+  function attachPaginationEvents() {
+    document.querySelectorAll('.page-btn').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const selectedPage = parseInt(e.target.dataset.page);
+        if (selectedPage) {
+          currentPage = selectedPage;
+          const pagedData = paginate(filteredData, currentPage, itemsPerPage);
+          displayResults(pagedData);
+          setupPagination(filteredData.length);
+          totalResults.innerHTML = Object.keys(filteredData).length;
+        }
+      });
+    });
+  }
+
+  // Show error message
   function showError(message) {
     const listContent = document.querySelector('.listContent');
     if (listContent) {
-      listContent.innerHTML = ''; // Clear any previous content
+      listContent.innerHTML = '';
       const errorMessage = document.createElement('article');
       errorMessage.className = 'title-post error';
       errorMessage.textContent = message;
@@ -170,22 +221,29 @@ window.onload = function () {
 
   // Function to clear all filters and reset dropdowns
   function clearFilters() {
-    try {
-      dropdownKeys.forEach(({ selector }) => {
-        const dropdownElement = document.querySelector(selector);
-        if (dropdownElement) {
-          dropdownElement.value = '--'; // Reset each dropdown to "All"
-        }
-      });
+    dropdownKeys.forEach(({ selector }) => {
+      const dropdownElement = document.querySelector(selector);
+      if (dropdownElement) {
+        dropdownElement.value = '--';
+      }
+    });
 
-      // Display all data again after clearing the filters
-      displayResults(jsonData);
-    } catch (error) {
-      console.error('Error clearing filters:', error);
-      showError('Error clearing filters, please try again.');
-    }
+    currentPage = 1;
+    filteredData = jsonData;
+    const firstPageData = paginate(filteredData, currentPage, itemsPerPage);
+    displayResults(firstPageData);
+    setupPagination(filteredData.length);
+    totalResults.innerHTML = Object.keys(filteredData).length;
   }
 
-  // Initialize the data fetch on page load
+  // Initialize fetch data and setup filters
   fetchData();
-}
+
+  // Attach event listeners to dropdown changes
+  dropdownKeys.forEach(({ selector }) => {
+    const dropdownElement = document.querySelector(selector);
+    if (dropdownElement) {
+      dropdownElement.addEventListener('change', filterResults);
+    }
+  });
+};
