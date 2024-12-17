@@ -23,6 +23,8 @@ window.onload = function () {
   const itemsPerPage = 20; // Number of items to display per page
   const visiblePages = 9; // Number of pagination buttons to display at once
   const totalResults = document.querySelector('.total-results span'); // Element showing total results
+  // const jsonPath = "https://raw.githubusercontent.com/nags338228/bereavement-services/master/services_converted.json";
+  const jsonPath = "./services_converted.json";
 
   /**
    * Fetch the JSON data from the server.
@@ -30,7 +32,7 @@ window.onload = function () {
    */
   async function fetchData() {
     try {
-      const response = await fetch('./services_converted.json'); // JSON file location
+      const response = await fetch(jsonPath); // JSON file location
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
