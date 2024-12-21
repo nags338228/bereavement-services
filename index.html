@@ -7,11 +7,24 @@
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
 	<link rel="manifest" href="/favicon/site.webmanifest">
 	<title>JavaScript</title>
-	<link rel="stylesheet" href="./css/choices.min.css" />
-	<script src="./js/choices.min.js"></script>
+
+
+
+	<!-- Include Twitter Bootstrap and jQuery: -->
+	<link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css" type="text/css"/>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script type="text/javascript" src="./js/bootstrap/bootstrap.min.js"></script>
+	
+	<!-- Include the plugin's CSS and JS: -->
+	<script type="text/javascript" src="./js/bootstrap/bootstrap-multiselect.js"></script>
+	<link rel="stylesheet" href="./css/bootstrap/bootstrap-multiselect.css" type="text/css"/>
+
+	<script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.3/dist/index.bundle.min.js"></script>
+
+	
 	<link rel="stylesheet" href="./css/style.css" type="text/css" />
-	<script src="./js/filterScript-new.js"></script>
-	<!-- https://www.cssscript.com/customizable-select-box-input-field-enhancement-library-choices-js/ -->
+	<script src="./js/filterScript.js"></script>
+
 	</head>
 	<body>
 		<div id="body-wrapper">
@@ -70,20 +83,83 @@
 			</div>
 			<div class="content listContent">
 				<!-- <article class="title-post">No results found</article> -->
-				<div class="pagination"></div>
+				<button id="load-more" style="display:none;">Load More</button>
 
-				<div class="container">
-					<!-- National Section -->
-					<div class="section national-section">
-						<h2>National</h2>
-						<div class="national-section-wrapper"></div>
-					</div>
-					<!-- Local to You Section -->
-					<div class="section local-section">
-            <h2>Local to you</h2>
-						<div class="local-section-wrapper"></div>
-					</div>
-				</div>
+
+
+
+
+
+<!-- Mobile Tabs -->
+<div class="tabs">
+	<button class="tab-btn" data-target="regionalServices">Regional Services</button>
+	<button class="tab-btn" data-target="nationalServices">National Services</button>
+	<button class="tab-btn" data-target="featuredServices">Featured Services</button>
+</div>
+
+<!-- Columns Section -->
+<div class="columns">
+	<div id="regionalServices" class="column section regional-section">
+		<h2>Regional services</h2>
+		<!-- Regional services content -->
+		<div class="regional-section-wrapper"></div>
+	</div>
+	<div id="nationalServices" class="column section national-section">
+		<h2>National services</h2>
+		<!-- National services content -->
+		<div class="national-section-wrapper"></div>
+	</div>
+	<div id="featuredServices" class="column section featured-section">
+		<h2>Featured services</h2>
+		<!-- Featured services content -->
+		<div class="featured-section-wrapper"></div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 			</div>
 		</div>
 	</body>
