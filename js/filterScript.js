@@ -19,18 +19,49 @@ window.onload = function () {
   let filteredData = [];
   let displayedData = [];
   const itemsPerLoad = 50; // Number of items to load initially and for each "Load More"
-  const jsonPath = "../services_converted.json";
+  // const jsonPath = "../services_converted.json";
+  const jsonPath = "../bereavement-services.json";
   const totalResultsElement = document.querySelector('.total-results span');
 
+  let itemCategories = [];
+  let catWho = [];
+  let catCDeath = [];
+  let catAgePerson = [];
+  let catLocation = [];
+  let catType = [];
   async function fetchData() {
     try {
       const response = await fetch(jsonPath);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const data = await response.json();
-      jsonData = data;
-      filteredData = data;
+      jsonData = data.items;
+      filteredData = data.items;
 
-      // Populate all dropdowns
+      jsonData.forEach((item) => {
+        if (item.categories) {
+          itemCategories.push(...item.categories);
+        }
+      });
+
+      catWho = extractedData('Who:', itemCategories).sort();
+      catCDeath = extractedData('Cir:', itemCategories).sort();
+      catAgePerson = extractedData('Age:', itemCategories).sort();
+      catLocation = extractedData('Location:', itemCategories).sort();
+      catType = extractedData('Type:', itemCategories).sort();
+      console.log(catWho);
+      console.log('----------------------------------------------------');
+      console.log(catCDeath);
+      console.log('----------------------------------------------------');
+      console.log(catAgePerson);
+      console.log('----------------------------------------------------');
+      console.log(catLocation);
+      console.log('----------------------------------------------------');
+      console.log(catType);
+
+      populateDropdown(document.querySelector('.who-has-died select'), catWho);
+      initializeMultiselect(document.querySelector('.who-has-died select'));
+
+      /*// Populate all dropdowns
       dropdownKeys.forEach(({ key, selector }) => {
         const dropdownElement = document.querySelector(selector);
         if (dropdownElement) {
@@ -40,15 +71,30 @@ window.onload = function () {
         }
       });
 
-      // Initially display results
+      /* // Initially display results
       displayedData = filteredData.slice(0, itemsPerLoad);
       displayResults(displayedData);
       updateLoadMoreButton();
-      updateTotalResults(filteredData.length);
+      updateTotalResults(filteredData.length);*/
     } catch (error) {
       console.error('Error fetching or processing the data:', error);
       showError('Error loading data, please try again later.');
     }
+  }
+
+
+  function extractedData(delimiter, dataArrays) {
+    const combinedData = [];
+
+    // Iterate through each entry in the data array
+    dataArrays.forEach(data => {
+      if (data.includes(delimiter) && data.split(delimiter)[1].trim() !== "") {
+        combinedData.push(data.split(delimiter)[1].trim());
+      }
+    });
+
+    // Remove duplicates using a Set
+    return [...new Set(combinedData)];
   }
 
   function populateDropdown(element, options) {
@@ -86,16 +132,20 @@ window.onload = function () {
       regionalSection.innerHTML = '<div class="no-results">No results found</div>';
     } else {
       const html = data.map(item => `
-        <div class="card">
+        <div class="card border-0 border-bottom">
           <div class="card-body">
-            <h5 class="card-title">${item.Title}</h5>
-            <p class="card-text">${stripHtmlAndLimit(item.Content, 100) || 'No description available.'}</p>
-            
-            <div class="card-read-more">
-              <a href="#" class="card-link" data-toggle="lightbox">
-                <p class="card-text-hidden">${item.Content || 'No description available.'}</p>
-              </a>
+            <h5 class="card-title">${item.title}</h5>
+            <div class='card-text-description'>
+              <p class="card-text">${stripHtmlAndLimit(item.body, 100) || 'No description available.'}</p>
             </div>
+            
+            <button
+              class="btn btn-primary read-more mt-3"
+              data-bs-toggle="modal"
+              data-bs-target="#descriptionModal"
+              data-content="${item.body || 'No description available.'}">
+              Read More
+            </button>
           </div>
         </div>
       `).join('');
