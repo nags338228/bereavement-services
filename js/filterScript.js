@@ -10,7 +10,13 @@ window.addEventListener("load", function () {
   let jsonData = [];
   let filteredData = [];
   let displayedData = [];
-  const itemsPerLoad = 5; // Number of items to load initially and for each "Load More"
+  let wholeCategories = {};
+  let catWho = [];
+  let catCDeath = [];
+  let catAgePerson = [];
+  let catLocation = [];
+  let catType = [];
+  const itemsPerLoad = 50; // Number of items to load initially and for each "Load More"
   // const jsonPath = "../services_converted.json";
   const jsonPath = "../bereavement-services.json";
   const totalResultsElement = document.querySelector('.total-results span');
@@ -21,22 +27,40 @@ window.addEventListener("load", function () {
       const response = await fetch(jsonPath);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const data = await response.json();
-      jsonData = data.items;
-      filteredData = data.items;
+      originalData = data.items;
 
-      jsonData.forEach((item) => {
+      originalData.forEach((item) => {
+
         if (item.categories) {
           itemCategories.push(...item.categories);
         }
+        catWho = extractedData('Who:', itemCategories).sort()
+        catCDeath = extractedData('Cir:', itemCategories).sort()
+        catAgePerson = extractedData('Age:', itemCategories).sort()
+        catLocation = extractedData('Location:', itemCategories).sort()
+        catType = extractedData('Type:', itemCategories).sort()
+        requiredData = [{
+          "Title": item.title,
+          "Content": item.body,
+          "catWho": catWho,
+          "catCDeath": catCDeath,
+          "catAgePerson": catAgePerson,
+          "catLocation": catLocation,
+          "catType": catType,
+        }];
+        jsonData.push(...requiredData);
       });
+      filteredData = jsonData;
 
       wholeCategories = {
-        'catWho': extractedData('Who:', itemCategories).sort(),
-        'catCDeath': extractedData('Cir:', itemCategories).sort(),
-        'catAgePerson': extractedData('Age:', itemCategories).sort(),
-        'catLocation': extractedData('Location:', itemCategories).sort(),
-        'catType': extractedData('Type:', itemCategories).sort(),
+        'catWho': catWho,
+        'catCDeath': catCDeath,
+        'catAgePerson': catAgePerson,
+        'catLocation': catLocation,
+        'catType': catType,
       };
+      console.log(jsonData)
+      console.log(filteredData)
 
       dropdownKeys.forEach((item) => {
         populateDropdown(document.querySelector(item.selector), wholeCategories[item.key]);
@@ -106,9 +130,9 @@ window.addEventListener("load", function () {
       const html = data.map(item => `
         <div class="card border-0 border-bottom">
           <div class="card-body">
-            <h5 class="card-title">${item.title}</h5>
+            <h5 class="card-title">${item.Title}</h5>
             <div class='card-text-description'>
-              <p class="card-text">${stripHtmlAndLimit(item.body, 100) || 'No description available.'}</p>
+              <p class="card-text">${stripHtmlAndLimit(item.Content, 100) || 'No description available.'}</p>
             </div>
             <button
               class="btn btn-primary read-more mt-3"
@@ -119,7 +143,7 @@ window.addEventListener("load", function () {
               Read More
             </button>
             <div class='card-description-hidden d-none' id="cardDescription">
-              ${item.body || 'No description available.'}
+              ${item.Content || 'No description available.'}
             </div>
           </div>
         </div>
@@ -191,6 +215,7 @@ window.addEventListener("load", function () {
   });
 
   function filterResults() {
+    console.log(dropdownKeys)
     try {
       const filters = {};
       dropdownKeys.forEach(({ key, selector }) => {
@@ -205,6 +230,7 @@ window.addEventListener("load", function () {
       });
 
       displayedData = filteredData.slice(0, itemsPerLoad);
+      console.log(displayedData)
       displayResults(displayedData);
       updateLoadMoreButton();
       updateTotalResults(filteredData.length);

@@ -1,222 +1,201 @@
-// Configuration Variables
-const ITEMS_PER_PAGE = 20; // Number of items per page
-const MAX_VISIBLE_PAGES = 9; // Maximum visible pages in pagination
-const JSON_FILE_PATH = "https://raw.githubusercontent.com/nags338228/bereavement-services/master/services_converted.json"; // JSON file path
+window.onload = function () {
+  const dropDownSelectors = {
+    whoDied: '.who-has-died select',
+    circumstancesDeath: '.circumstances-death select',
+    agePerson: '.age-person-needing-support select',
+    typeSupport: '.type-support select',
+    location: '.location select',
+  };
 
-/**
- * Initialize Choices.js on all dropdowns.
- * Enhances dropdowns to support multi-select, search, and dynamic UI improvements.
- * Includes error handling to check if Choices.js is loaded.
- */
-function initializeChoices() {
-  const selectElements = document.querySelectorAll('select[data-choice]');
-  if (typeof Choices === 'undefined') {
-    console.warn("Choices.js library is not loaded. Falling back to vanilla dropdowns.");
-    return;
+  const dropdownKeys = [
+    { key: "Who has died?", selector: dropDownSelectors.whoDied },
+    { key: "Circumstances of death", selector: dropDownSelectors.circumstancesDeath },
+    { key: "Age of person needing support", selector: dropDownSelectors.agePerson },
+    { key: "Type of support", selector: dropDownSelectors.typeSupport },
+    { key: "Location", selector: dropDownSelectors.location },
+  ];
+
+  let jsonData = [];
+  let filteredData = [];
+  let displayedData = [];
+  const itemsPerLoad = 50; // Number of items to load initially and for each "Load More"
+  const jsonPath = "../services_converted.json";
+  const totalResultsElement = document.querySelector('.total-results span');
+
+  async function fetchData() {
+    try {
+      const response = await fetch(jsonPath);
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await response.json();
+      jsonData = data;
+      filteredData = data;
+      console.log(jsonData)
+
+      // Populate all dropdowns
+      dropdownKeys.forEach(({ key, selector }) => {
+        const dropdownElement = document.querySelector(selector);
+        if (dropdownElement) {
+          const uniqueOptions = [...new Set(data.flatMap(item => item[key] || []))].sort();
+          populateDropdown(dropdownElement, uniqueOptions);
+          initializeMultiselect(dropdownElement);
+        }
+      });
+
+      // Initially display results
+      displayedData = filteredData.slice(0, itemsPerLoad);
+      displayResults(displayedData);
+      updateLoadMoreButton();
+      updateTotalResults(filteredData.length);
+    } catch (error) {
+      console.error('Error fetching or processing the data:', error);
+      showError('Error loading data, please try again later.');
+    }
   }
 
-  selectElements.forEach((select) => {
+  function populateDropdown(element, options) {
     try {
-      new Choices(select, {
-        removeItemButton: true,
-        searchEnabled: true,
-        placeholderValue: 'Select options',
-        noResultsText: 'No results found',
-        noChoicesText: 'No choices to choose from',
-        allowHTML: true,
-        shouldSortItems: false,
-        shouldSort: true,
+      if (!element) throw new Error('Dropdown element not found');
+      element.innerHTML = '<option value="--">All</option>'; // Reset dropdown
+      options.forEach(option => {
+        const optionElement = document.createElement('option');
+        optionElement.value = option;
+        optionElement.textContent = option;
+        element.appendChild(optionElement);
       });
     } catch (error) {
-      console.error("Error initializing Choices.js for:", select, error);
+      console.error('Error populating dropdown:', error);
+      showError('Error populating dropdown, please check the data.');
     }
-  });
-}
+  }
 
-/**
- * Populate dropdown filters dynamically based on JSON data.
- * Ensures "All" option is always first, and other options are sorted alphabetically.
- */
-function populateFilters(data) {
-  const filters = {
-    "Who has died?": document.querySelector('.who-has-died select'),
-    "Circumstances of death": document.querySelector('.circumstances-death select'),
-    "Age of person needing support": document.querySelector('.age-person-needing-support select'),
-    "Type of support": document.querySelector('.type-support select'),
-    "Location": document.querySelector('.location select'),
-  };
-
-  Object.keys(filters).forEach((key) => {
-    const selectElement = filters[key];
-    const uniqueOptions = new Set();
-
-    data.forEach((item) => {
-      if (item[key]) {
-        item[key].forEach((option) => uniqueOptions.add(option));
-      }
+  function initializeMultiselect(element) {
+    $(element).multiselect("refresh");
+    $(element).multiselect({
+      noneSelectedText: "Select options",
+      liveSearch: true,
+      actionsBox: true,
+      selectAllText: "Select All",
+      deselectAllText: "Deselect All",
     });
+  }
 
-    const options = Array.from(uniqueOptions).sort();
-    selectElement.innerHTML = `
-      <option value="--">All</option>
-      ${options.map((option) => `<option value="${option}">${option}</option>`).join("")}
-    `;
-  });
+  function displayResults(data) {
+    const regionalSection = document.querySelector('.regional-section-wrapper');
+    regionalSection.innerHTML = '';
 
-  initializeChoices();
-}
-
-/**
- * Render paginated content dynamically based on the filtered results.
- */
-function renderContent(data, currentPage = 1) {
-  const nationalWrapper = document.querySelector('.national-section-wrapper');
-  const localWrapper = document.querySelector('.local-section-wrapper');
-  const totalResults = document.querySelector('.total-results span');
-
-  nationalWrapper.innerHTML = "";
-  localWrapper.innerHTML = "";
-
-  const start = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedData = data.slice(start, start + ITEMS_PER_PAGE);
-
-  const locationFilterApplied = getSelectedValues(document.querySelector('.location select')).length > 0 &&
-    !getSelectedValues(document.querySelector('.location select')).includes('--');
-
-  paginatedData.forEach((item) => {
-    const section = locationFilterApplied && item.Location && item.Location.length > 0 ? localWrapper : nationalWrapper;
-
-    section.innerHTML += `
-      <div class="card">
-        <div class="card-data">
-          <h3>${item.Title}</h3>
-          <p>${item.Content || 'No description available.'}</p>
+    if (data.length === 0) {
+      regionalSection.innerHTML = '<div class="no-results">No results found</div>';
+    } else {
+      const html = data.map(item => `
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">${item.Title}</h5>
+            <p class="card-text">${stripHtmlAndLimit(item.Content, 100) || 'No description available.'}</p>
+            
+            <div class="card-read-more">
+              <a href="#" class="card-link" data-toggle="lightbox">
+                <p class="card-text-hidden">${item.Content || 'No description available.'}</p>
+              </a>
+            </div>
+          </div>
         </div>
-        <div class="arrow">&gt;</div>
-      </div>
-    `;
-  });
-
-  totalResults.textContent = data.length;
-  setupPagination(data, currentPage);
-}
-
-/**
- * Setup pagination dynamically for the filtered results.
- * @param {Array} data - Filtered data to paginate.
- * @param {Number} currentPage - Current active page number.
- */
-function setupPagination(data, currentPage) {
-  const paginationWrapper = document.querySelector('.pagination');
-  paginationWrapper.innerHTML = "";
-
-  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
-  const startPage = Math.max(1, currentPage - Math.floor(MAX_VISIBLE_PAGES / 2));
-  const endPage = Math.min(totalPages, startPage + MAX_VISIBLE_PAGES - 1);
-
-  let paginationHTML = "";
-
-  if (currentPage > 1) {
-    paginationHTML += `<button class="pagination-button" data-page="${currentPage - 1}">Back</button>`;
+      `).join('');
+      regionalSection.innerHTML += html;
+    }
   }
 
-  for (let i = startPage; i <= endPage; i++) {
-    paginationHTML += `
-      <button class="pagination-button ${i === currentPage ? "active" : ""}" data-page="${i}">
-        ${i}
-      </button>
-    `;
-  }
+  function stripHtmlAndLimit(text, limit) {
+    // Create a temporary DOM element to strip HTML tags
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = text;
+    const plainText = tempDiv.textContent || tempDiv.innerText || "";
 
-  if (currentPage < totalPages) {
-    paginationHTML += `<button class="pagination-button" data-page="${currentPage + 1}">Next</button>`;
-  }
+    // Check if the text needs truncation
+    if (plainText.length > limit) {
+      // Find the last space within the limit to avoid cutting a word
+      let truncatedText = plainText.substring(0, limit);
+      const lastSpaceIndex = truncatedText.lastIndexOf(' ');
 
-  paginationWrapper.innerHTML = paginationHTML;
-
-  paginationWrapper.querySelectorAll(".pagination-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const page = parseInt(button.dataset.page);
-      renderContent(data, page);
-    });
-  });
-}
-
-/**
- * Fetch the JSON file, handle errors gracefully, and initialize the application.
- */
-function initialize() {
-  fetch(JSON_FILE_PATH)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Failed to fetch JSON file: ${response.statusText}`);
+      if (lastSpaceIndex > -1) {
+        truncatedText = truncatedText.substring(0, lastSpaceIndex);
       }
-      return response.json();
-    })
-    .then((data) => {
-      populateFilters(data);
-      renderContent(data);
 
-      document.querySelectorAll('select[data-choice]').forEach((select) => {
-        select.addEventListener('change', () => applyFilters(data));
+      return truncatedText + ' ...';
+    }
+
+    return plainText;
+  }
+
+  function updateTotalResults(count) {
+    totalResultsElement.textContent = count;
+  }
+
+  function updateLoadMoreButton() {
+    const loadMoreButton = document.getElementById('load-more');
+    if (displayedData.length >= filteredData.length) {
+      loadMoreButton.style.display = 'none';
+    } else {
+      loadMoreButton.style.display = 'block';
+    }
+  }
+
+  document.getElementById('load-more').addEventListener('click', () => {
+    const startIndex = displayedData.length;
+    const nextBatch = filteredData.slice(startIndex, startIndex + itemsPerLoad);
+    displayedData = [...displayedData, ...nextBatch];
+    displayResults(displayedData);
+    updateLoadMoreButton();
+    updateTotalResults(filteredData.length);
+  });
+
+  document.getElementById('clear-filters').addEventListener('click', () => {
+    dropdownKeys.forEach(({ selector }) => {
+      const dropdownElement = document.querySelector(selector);
+      $(dropdownElement).selectpicker("deselectAll");
+      $(dropdownElement).selectpicker("refresh");
+    });
+
+    filteredData = jsonData;
+    displayedData = filteredData.slice(0, itemsPerLoad);
+    displayResults(displayedData);
+    updateLoadMoreButton();
+    updateTotalResults(filteredData.length);
+  });
+
+  dropdownKeys.forEach(({ selector }) => {
+    $(document.querySelector(selector)).on('change', filterResults);
+  });
+
+  function filterResults() {
+    try {
+      const filters = {};
+      dropdownKeys.forEach(({ key, selector }) => {
+        const selectedValues = getSelectedValues(selector);
+        if (selectedValues !== null) filters[key] = selectedValues;
       });
 
-      document.querySelector('#clear-filters').addEventListener('click', () => clearFilters(data));
-    })
-    .catch((error) => {
-      console.error("Error loading or initializing data:", error);
-      alert("An error occurred while loading the application. Please try again later.");
-    });
-}
+      filteredData = jsonData.filter(item => {
+        return Object.entries(filters).every(([key, values]) => {
+          return values.some(value => item[key]?.includes(value));
+        });
+      });
 
-/**
- * Apply filters to the data and update the content dynamically.
- */
-function applyFilters(data) {
-  const filters = {
-    "Who has died?": getSelectedValues(document.querySelector('.who-has-died select')),
-    "Circumstances of death": getSelectedValues(document.querySelector('.circumstances-death select')),
-    "Age of person needing support": getSelectedValues(document.querySelector('.age-person-needing-support select')),
-    "Type of support": getSelectedValues(document.querySelector('.type-support select')),
-    "Location": getSelectedValues(document.querySelector('.location select')),
-  };
-
-  const filteredData = data.filter((item) => {
-    return Object.keys(filters).every((key) => {
-      const selectedValues = filters[key];
-      return (
-        selectedValues.length === 0 ||
-        selectedValues.includes('--') ||
-        (item[key] && selectedValues.some((value) => item[key].includes(value)))
-      );
-    });
-  });
-
-  renderContent(filteredData);
-}
-
-/**
- * Get selected values from a multiselect dropdown.
- */
-function getSelectedValues(selectElement) {
-  return Array.from(selectElement.selectedOptions).map((option) => option.value);
-}
-
-/**
- * Clear all filters and reset the dropdowns and content.
- */
-function clearFilters(data) {
-  const selectElements = document.querySelectorAll('select[data-choice]');
-  selectElements.forEach((select) => {
-    if (typeof select.choicesInstance !== "undefined") {
-      select.choicesInstance.removeActiveItems();
-    } else {
-      select.selectedIndex = 0;
+      displayedData = filteredData.slice(0, itemsPerLoad);
+      console.log(filteredData)
+      displayResults(displayedData);
+      updateLoadMoreButton();
+      updateTotalResults(filteredData.length);
+    } catch (error) {
+      console.error('Error filtering results:', error);
+      showError('Error filtering results, please try again.');
     }
-  });
+  }
 
-  renderContent(data);
-}
+  function getSelectedValues(selector) {
+    const selectedOptions = Array.from(document.querySelector(selector).selectedOptions);
+    const values = selectedOptions.map(option => option.value);
+    return values.length === 0 || values.includes('--') ? null : values;
+  }
 
-// Start the script when the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", initialize);
+  fetchData();
+};
