@@ -10,7 +10,7 @@ window.addEventListener("load", function () {
   let jsonData = [];
   let filteredData = [];
   let displayedData = [];
-  const itemsPerLoad = 50; // Number of items to load initially and for each "Load More"
+  const itemsPerLoad = 5; // Number of items to load initially and for each "Load More"
   // const jsonPath = "../services_converted.json";
   const jsonPath = "../bereavement-services.json";
   const totalResultsElement = document.querySelector('.total-results span');
@@ -42,16 +42,6 @@ window.addEventListener("load", function () {
         populateDropdown(document.querySelector(item.selector), wholeCategories[item.key]);
         initializeMultiselect(document.querySelector(item.selector));
       });
-
-      /*// Populate all dropdowns
-      dropdownKeys.forEach(({ key, selector }) => {
-        const dropdownElement = document.querySelector(selector);
-        if (dropdownElement) {
-          const uniqueOptions = [...new Set(data.flatMap(item => item[key] || []))].sort();
-          populateDropdown(dropdownElement, uniqueOptions);
-          initializeMultiselect(dropdownElement);
-        }
-      });*/
 
       // Initially display results
       displayedData = filteredData.slice(0, itemsPerLoad);
