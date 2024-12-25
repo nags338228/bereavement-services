@@ -1,0 +1,16 @@
+Adult child,Baby,Baby at birth,Child,Friend/colleague,Grandchild,Grandparent,Other significant person,Parent,Pet,Relative,Sibling,Spouse/partner,Unborn baby
+
+
+
+
+Accident,Cancer,Covid 19,Heart disease/heart attack,Hereditary or congenital disease,Illness,Medical complications,Military action,Miscarriage,Missing person,Negligence or neglect,Neurological,Old age,Pregnancy termination/Fetal Anomaly,Still Birth,Substance Misuse & Addiction,Sudden Unexplained Death (SIDS, SUDI, SUDC),Suicide,Violence/murder
+
+
+18-30,30-50,50-65,65+,Children up to 11,Young people (11-18)
+
+
+Counselling,Funeral Advice,Help with admin,Helplines,Mental Health Services,Other Support,Peer Support,Specialist Services,Specific Communities
+
+
+
+Aberdeen City,Aberdeenshire,Anglesey,Angus,Argyll and Bute,Ayrshire East,Ayrshire North,Ayrshire South,Bedfordshire,Belfast,Berkshire,Blaenau Gwent,Brecknockshire,Brighton & Hove,Bristol,Buckinghamshire,Caernarfonshire,Caerphilly County Borough,Cambridgeshire,Cardiff,Cardiganshire,Carmarthenshire,Channel Islands,Cheshire,Clackmannanshire & Stirling,Cornwall & Isles of Scilly,County Antrim,County Armagh,County Donegal (Eire),County Down,County Fermanagh,County Londonderry,County Mayo,County Tyrone,Cumbria,Denbighshire,Derbyshire,Devon,Dorset,Dumbartonshire East,Dumbartonshire West,Dumfries & Galloway,Dundee,Durham,Dyfed,East Lothian,East Sussex,East Yorkshire,Edinburgh,Essex,Falkirk,Fife,Flintshire,Glamorgan,Glasgow,Gloucestershire,Greater Manchester,Gwent,Gwynedd,Hampshire,Herefordshire,Hertfordshire,Highland Mid,Highland North,Highland South,Highland West,Humberside,Huntingdonshire,Inverclyde,Isle of Man,Isle of Wight,Jersey,Kent,Lanarkshire North,Lanarkshire South,Lancashire,Leicestershire,Lincolnshire,London - Bromley,London - Dartford,London - East Central London,London - East London,London - Enfield,London - Harrow,London - Ilford,London - North London,London - North West London,London - Romford,London - South East London,London - South West London,London - Southall,London - Twickenham,London - Waltham Forest,London - Watford,London - West Central London,London - West London,Merioneth,Merseyside,Mid Glamorgan,Middlesex,Midlothian,Monmouthshire,Montgomeryshire,Moray,NATIONAL ORGANISATIONS,Norfolk,North Humberside,North Yorkshire,Northamptonshire,Northumberland,Nottinghamshire,Online,Orkney,Oxfordshire,Pembrokeshire,Perth & Kinross,Powys,Radnorshire,Renfrewshire,Renfrewshire East,Rhondda Cynon Taff,Rutland,Scottish Borders,Shetland,Shropshire,Somerset,South Glamorgan,South Humberside,South Yorkshire,Staffordshire,Suffolk,Surrey,Swansea,Teesside,Tyneside & Wear area,Warwickshire,West Glamorgan,West Lothian,West Midlands,West Sussex,West Yorkshire,Western Isles,Westmorland,Wigtownshire,Wiltshire,Worcestershire,Yorkshire

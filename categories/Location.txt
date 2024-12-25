@@ -1,0 +1,147 @@
+Location:Aberdeen City
+Location:Aberdeenshire
+Location:Anglesey
+Location:Angus
+Location:Argyll and Bute
+Location:Ayrshire East
+Location:Ayrshire North
+Location:Ayrshire South
+Location:Bedfordshire
+Location:Belfast
+Location:Berkshire
+Location:Blaenau Gwent
+Location:Brecknockshire
+Location:Brighton & Hove
+Location:Bristol
+Location:Buckinghamshire
+Location:Caernarfonshire
+Location:Caerphilly County Borough
+Location:Cambridgeshire
+Location:Cardiff
+Location:Cardiganshire
+Location:Carmarthenshire
+Location:Channel Islands
+Location:Cheshire
+Location:Clackmannanshire & Stirling
+Location:Cornwall & Isles of Scilly
+Location:County Antrim
+Location:County Armagh
+Location:County Donegal (Eire)
+Location:County Down
+Location:County Fermanagh
+Location:County Londonderry
+Location:County Mayo
+Location:County Tyrone
+Location:Cumbria
+Location:Denbighshire
+Location:Derbyshire
+Location:Devon
+Location:Dorset
+Location:Dumbartonshire East
+Location:Dumbartonshire West
+Location:Dumfries & Galloway
+Location:Dundee
+Location:Durham
+Location:Dyfed
+Location:East Lothian
+Location:East Sussex
+Location:East Yorkshire
+Location:Edinburgh
+Location:Essex
+Location:Falkirk
+Location:Fife
+Location:Flintshire
+Location:Glamorgan
+Location:Glasgow
+Location:Gloucestershire
+Location:Greater Manchester
+Location:Gwent
+Location:Gwynedd
+Location:Hampshire
+Location:Herefordshire
+Location:Hertfordshire
+Location:Highland Mid
+Location:Highland North
+Location:Highland South
+Location:Highland West
+Location:Humberside
+Location:Huntingdonshire
+Location:Inverclyde
+Location:Isle of Man
+Location:Isle of Wight
+Location:Jersey
+Location:Kent
+Location:Lanarkshire North
+Location:Lanarkshire South
+Location:Lancashire
+Location:Leicestershire
+Location:Lincolnshire
+Location:London - Bromley
+Location:London - Dartford
+Location:London - East Central London
+Location:London - East London
+Location:London - Enfield
+Location:London - Harrow
+Location:London - Ilford
+Location:London - North London
+Location:London - North West London
+Location:London - Romford
+Location:London - South East London
+Location:London - South West London
+Location:London - Southall
+Location:London - Twickenham
+Location:London - Waltham Forest
+Location:London - Watford
+Location:London - West Central London
+Location:London - West London
+Location:Merioneth
+Location:Merseyside
+Location:Mid Glamorgan
+Location:Middlesex
+Location:Midlothian
+Location:Monmouthshire
+Location:Montgomeryshire
+Location:Moray
+Location:NATIONAL ORGANISATIONS
+Location:Norfolk
+Location:North Humberside
+Location:North Yorkshire
+Location:Northamptonshire
+Location:Northumberland
+Location:Nottinghamshire
+Location:Online
+Location:Orkney
+Location:Oxfordshire
+Location:Pembrokeshire
+Location:Perth & Kinross
+Location:Powys
+Location:Radnorshire
+Location:Renfrewshire
+Location:Renfrewshire East
+Location:Rhondda Cynon Taff
+Location:Rutland
+Location:Scottish Borders
+Location:Shetland
+Location:Shropshire
+Location:Somerset
+Location:South Glamorgan
+Location:South Humberside
+Location:South Yorkshire
+Location:Staffordshire
+Location:Suffolk
+Location:Surrey
+Location:Swansea
+Location:Teesside
+Location:Tyneside & Wear area
+Location:Warwickshire
+Location:West Glamorgan
+Location:West Lothian
+Location:West Midlands
+Location:West Sussex
+Location:West Yorkshire
+Location:Western Isles
+Location:Westmorland
+Location:Wigtownshire
+Location:Wiltshire
+Location:Worcestershire
+Location:Yorkshire

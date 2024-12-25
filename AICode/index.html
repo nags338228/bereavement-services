@@ -295,34 +295,28 @@
 		</div>
 
 		<script>
-			/*$(document).ready(function () {
-				// $(".read-more").on("click", function () {
-				// 	const description = $(this)
-				// 		.closest(".card-body")
-				// 		.find(".description")
-				// 		.html();
-				// 	$("#descriptionModal .modal-body").html(description);
-				// });
-
-				// Initialize modal content on 'Read More' click
+			$(document).ready(function () {
 				// Handle the "Read More" button click
-				$(".read-more").on("click", function () {
-					// Retrieve content from the data-content attribute
-					const content = $(this).data("content");
+				$(document).on("click", ".read-more", function () {
+					// Find the sibling .content-hidden div
+					const contentElement = $(this).siblings("#cardDescription");
 
-					// Check if content exists
-					if (content && content.trim() !== "") {
-						// Update the modal body
-						$("#descriptionModal .modal-body").html(content);
+					// Check if the content element exists
+					if (contentElement.length > 0) {
+						console.log("Content element found. Loading into modal.");
+						// Load the sibling content into the modal
+						$("#descriptionModal .modal-body").html(contentElement.html());
 					} else {
-						// Log an error and set placeholder content
-						console.error("No content found for the selected item.");
+						console.error(
+							"No sibling content found for this Read More button."
+						);
+						alert("No details available.");
 						$("#descriptionModal .modal-body").html(
 							"<p>No details available.</p>"
 						);
 					}
 				});
-			});*/
+			});
 		</script>
 	</body>
 </html>

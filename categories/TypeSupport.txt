@@ -1,0 +1,9 @@
+Type:Counselling
+Type:Funeral Advice
+Type:Help with admin
+Type:Helplines
+Type:Mental Health Services
+Type:Other Support
+Type:Peer Support
+Type:Specialist Services
+Type:Specific Communities

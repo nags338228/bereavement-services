@@ -1,0 +1,6 @@
+Age:18-30
+Age:30-50
+Age:50-65
+Age:65+
+Age:Children up to 11
+Age:Young people (11-18)

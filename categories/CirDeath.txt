@@ -1,0 +1,19 @@
+Cir:Accident
+Cir:Cancer
+Cir:Covid 19
+Cir:Heart disease/heart attack
+Cir:Hereditary or congenital disease
+Cir:Illness
+Cir:Medical complications
+Cir:Military action
+Cir:Miscarriage
+Cir:Missing person
+Cir:Negligence or neglect
+Cir:Neurological
+Cir:Old age
+Cir:Pregnancy termination/Fetal Anomaly
+Cir:Still Birth
+Cir:Substance Misuse & Addiction
+Cir:Sudden Unexplained Death (SIDS, SUDI, SUDC)
+Cir:Suicide
+Cir:Violence/murder

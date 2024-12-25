@@ -1,18 +1,10 @@
-window.onload = function () {
-  const dropDownSelectors = {
-    whoDied: '.who-has-died select',
-    circumstancesDeath: '.circumstances-death select',
-    agePerson: '.age-person-needing-support select',
-    typeSupport: '.type-support select',
-    location: '.location select',
-  };
-
+window.addEventListener("load", function () {
   const dropdownKeys = [
-    { key: "Who has died?", selector: dropDownSelectors.whoDied },
-    { key: "Circumstances of death", selector: dropDownSelectors.circumstancesDeath },
-    { key: "Age of person needing support", selector: dropDownSelectors.agePerson },
-    { key: "Type of support", selector: dropDownSelectors.typeSupport },
-    { key: "Location", selector: dropDownSelectors.location },
+    { key: "catWho", selector: '.who-has-died select' },
+    { key: "catCDeath", selector: '.circumstances-death select', },
+    { key: "catAgePerson", selector: '.age-person-needing-support select' },
+    { key: "catType", selector: '.type-support select' },
+    { key: "catLocation", selector: '.location select' },
   ];
 
   let jsonData = [];
@@ -24,11 +16,6 @@ window.onload = function () {
   const totalResultsElement = document.querySelector('.total-results span');
 
   let itemCategories = [];
-  let catWho = [];
-  let catCDeath = [];
-  let catAgePerson = [];
-  let catLocation = [];
-  let catType = [];
   async function fetchData() {
     try {
       const response = await fetch(jsonPath);
@@ -43,23 +30,18 @@ window.onload = function () {
         }
       });
 
-      catWho = extractedData('Who:', itemCategories).sort();
-      catCDeath = extractedData('Cir:', itemCategories).sort();
-      catAgePerson = extractedData('Age:', itemCategories).sort();
-      catLocation = extractedData('Location:', itemCategories).sort();
-      catType = extractedData('Type:', itemCategories).sort();
-      console.log(catWho);
-      console.log('----------------------------------------------------');
-      console.log(catCDeath);
-      console.log('----------------------------------------------------');
-      console.log(catAgePerson);
-      console.log('----------------------------------------------------');
-      console.log(catLocation);
-      console.log('----------------------------------------------------');
-      console.log(catType);
+      wholeCategories = {
+        'catWho': extractedData('Who:', itemCategories).sort(),
+        'catCDeath': extractedData('Cir:', itemCategories).sort(),
+        'catAgePerson': extractedData('Age:', itemCategories).sort(),
+        'catLocation': extractedData('Location:', itemCategories).sort(),
+        'catType': extractedData('Type:', itemCategories).sort(),
+      };
 
-      populateDropdown(document.querySelector('.who-has-died select'), catWho);
-      initializeMultiselect(document.querySelector('.who-has-died select'));
+      dropdownKeys.forEach((item) => {
+        populateDropdown(document.querySelector(item.selector), wholeCategories[item.key]);
+        initializeMultiselect(document.querySelector(item.selector));
+      });
 
       /*// Populate all dropdowns
       dropdownKeys.forEach(({ key, selector }) => {
@@ -69,13 +51,13 @@ window.onload = function () {
           populateDropdown(dropdownElement, uniqueOptions);
           initializeMultiselect(dropdownElement);
         }
-      });
+      });*/
 
-      /* // Initially display results
+      // Initially display results
       displayedData = filteredData.slice(0, itemsPerLoad);
       displayResults(displayedData);
       updateLoadMoreButton();
-      updateTotalResults(filteredData.length);*/
+      updateTotalResults(filteredData.length);
     } catch (error) {
       console.error('Error fetching or processing the data:', error);
       showError('Error loading data, please try again later.');
@@ -138,14 +120,17 @@ window.onload = function () {
             <div class='card-text-description'>
               <p class="card-text">${stripHtmlAndLimit(item.body, 100) || 'No description available.'}</p>
             </div>
-            
             <button
               class="btn btn-primary read-more mt-3"
               data-bs-toggle="modal"
+              data-id="cardDescription"
               data-bs-target="#descriptionModal"
-              data-content="${item.body || 'No description available.'}">
+              data-content="${'No description available.'}">
               Read More
             </button>
+            <div class='card-description-hidden d-none' id="cardDescription">
+              ${item.body || 'No description available.'}
+            </div>
           </div>
         </div>
       `).join('');
@@ -246,4 +231,4 @@ window.onload = function () {
   }
 
   fetchData();
-};
+});
