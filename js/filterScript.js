@@ -12,10 +12,15 @@ window.addEventListener("load", function () {
   let displayedData = [];
   let wholeCategories = {};
   let catWho = [];
+  let whoCat = [];
   let catCDeath = [];
+  let cDeathCat = [];
   let catAgePerson = [];
+  let agePersonCat = [];
   let catLocation = [];
+  let locationCat = [];
   let catType = [];
+  let typeCat = [];
   const itemsPerLoad = 50; // Number of items to load initially and for each "Load More"
   // const jsonPath = "../services_converted.json";
   const jsonPath = "../bereavement-services.json";
@@ -30,15 +35,14 @@ window.addEventListener("load", function () {
       originalData = data.items;
 
       originalData.forEach((item) => {
-
         if (item.categories) {
           itemCategories.push(...item.categories);
         }
-        catWho = extractedData('Who:', itemCategories).sort()
-        catCDeath = extractedData('Cir:', itemCategories).sort()
-        catAgePerson = extractedData('Age:', itemCategories).sort()
-        catLocation = extractedData('Location:', itemCategories).sort()
-        catType = extractedData('Type:', itemCategories).sort()
+        catWho = extractedData('Who:', item.categories).sort()
+        catCDeath = extractedData('Cir:', item.categories).sort()
+        catAgePerson = extractedData('Age:', item.categories).sort()
+        catLocation = extractedData('Location:', item.categories).sort()
+        catType = extractedData('Type:', item.categories).sort()
         requiredData = [{
           "Title": item.title,
           "Content": item.body,
@@ -48,19 +52,24 @@ window.addEventListener("load", function () {
           "catLocation": catLocation,
           "catType": catType,
         }];
+
+        // Push the data into new array for dropdowns and after extraction
         jsonData.push(...requiredData);
+        whoCat = [...new Set([...whoCat, ...catWho])].sort();
+        cDeathCat = [...new Set([...cDeathCat, ...catCDeath])].sort();
+        agePersonCat = [...new Set([...agePersonCat, ...catAgePerson])].sort();
+        locationCat = [...new Set([...locationCat, ...catLocation])].sort();
+        typeCat = [...new Set([...typeCat, ...catType])].sort();
+
       });
       filteredData = jsonData;
-
       wholeCategories = {
-        'catWho': catWho,
-        'catCDeath': catCDeath,
-        'catAgePerson': catAgePerson,
-        'catLocation': catLocation,
-        'catType': catType,
+        'catWho': whoCat,
+        'catCDeath': cDeathCat,
+        'catAgePerson': agePersonCat,
+        'catLocation': locationCat,
+        'catType': typeCat,
       };
-      console.log(jsonData)
-      console.log(filteredData)
 
       dropdownKeys.forEach((item) => {
         populateDropdown(document.querySelector(item.selector), wholeCategories[item.key]);
@@ -74,21 +83,17 @@ window.addEventListener("load", function () {
       updateTotalResults(filteredData.length);
     } catch (error) {
       console.error('Error fetching or processing the data:', error);
-      showError('Error loading data, please try again later.');
     }
   }
 
-
   function extractedData(delimiter, dataArrays) {
     const combinedData = [];
-
     // Iterate through each entry in the data array
     dataArrays.forEach(data => {
       if (data.includes(delimiter) && data.split(delimiter)[1].trim() !== "") {
         combinedData.push(data.split(delimiter)[1].trim());
       }
     });
-
     // Remove duplicates using a Set
     return [...new Set(combinedData)];
   }
@@ -215,7 +220,6 @@ window.addEventListener("load", function () {
   });
 
   function filterResults() {
-    console.log(dropdownKeys)
     try {
       const filters = {};
       dropdownKeys.forEach(({ key, selector }) => {
@@ -225,12 +229,15 @@ window.addEventListener("load", function () {
 
       filteredData = jsonData.filter(item => {
         return Object.entries(filters).every(([key, values]) => {
-          return values.some(value => item[key]?.includes(value));
+          let categoryArray = Array.isArray(item[key]) ? item[key] : (item[key] ? [item[key]] : []);
+          return values.some(value =>
+            categoryArray.some(cat => cat.trim().toLowerCase() === value.trim().toLowerCase())
+          );
         });
       });
 
       displayedData = filteredData.slice(0, itemsPerLoad);
-      console.log(displayedData)
+      // console.log(filteredData)
       displayResults(displayedData);
       updateLoadMoreButton();
       updateTotalResults(filteredData.length);

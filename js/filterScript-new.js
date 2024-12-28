@@ -167,6 +167,7 @@ window.onload = function () {
   });
 
   function filterResults() {
+    console.log(dropdownKeys);
     try {
       const filters = {};
       dropdownKeys.forEach(({ key, selector }) => {
