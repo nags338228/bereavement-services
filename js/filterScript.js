@@ -60,7 +60,6 @@ window.addEventListener("load", function () {
         agePersonCat = [...new Set([...agePersonCat, ...catAgePerson])].sort();
         locationCat = [...new Set([...locationCat, ...catLocation])].sort();
         typeCat = [...new Set([...typeCat, ...catType])].sort();
-
       });
       filteredData = jsonData;
       wholeCategories = {
