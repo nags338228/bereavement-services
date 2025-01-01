@@ -1,0 +1,6 @@
+python/.idea/
+python/idea
+python/build
+python/dist/
+python/output
+python/web_crawler.spec

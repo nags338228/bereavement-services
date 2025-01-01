@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:wp="http://wordpress.org/export/1.2/">
+	<channel>
+		<title>Blog Posts</title>
+		<link>https://yourblog.com</link>
+		<pubDate>Thu, 19 Dec 2024 22:59:29 +0000</pubDate>
+		<description />
+		<language>en-US</language>
+		<wp:wxr_version>1.2</wp:wxr_version>
+		<wp:author>
+			<wp:author_id>1</wp:author_id>
+			<wp:author_login>admin</wp:author_login>
+			<wp:author_email>admin@yourblog.com</wp:author_email>
+			<wp:author_display_name>Admin</wp:author_display_name>
+			<wp:author_first_name>Admin</wp:author_first_name>
+			<wp:author_last_name />
+		</wp:author>
+		<item>
+			<guid isPermaLink="false">//samaritans-urgent-help</guid>
+			<title>*Samaritans - Urgent Help</title>
+			<link>//samaritans-urgent-help</link>
+			<wp:post_name>/samaritans-urgent-help</wp:post_name>
+			<wp:post_type>post</wp:post_type>
+			<wp:post_id>1</wp:post_id>
+			<wp:status>publish</wp:status>
+			<pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+			<wp:post_date>2024-01-01 00:00:00</wp:post_date>
+			<wp:post_date_gmt>2024-01-01 00:00:00</wp:post_date_gmt>
+			<dc:creator>Guest</dc:creator>
+			<wp:comment_status>open</wp:comment_status>
+			<wp:ping_status>open</wp:ping_status>
+			<category domain="category" nicename="who:friend/colleague">Who:Friend/colleague</category>
+			<category domain="category" nicename="who:sibling">Who:Sibling</category>
+			<category domain="category" nicename="who:grandparent">Who:Grandparent</category>
+			<category domain="category" nicename="who:parent">Who:Parent</category>
+			<category domain="category" nicename="who:relative-cir:neurological">Who:Relative Cir:Neurological</category>
+			<category domain="category" nicename="cir:medical-complications">Cir:Medical complications</category>
+			<category domain="category" nicename="cir:violence/murder">Cir:Violence/murder</category>
+			<category domain="category" nicename="cir:illness">Cir:Illness</category>
+			<category domain="category" nicename="cir:negligence-or-neglect">Cir:Negligence or neglect</category>
+			<category domain="category" nicename="cir:sudden-unexplained-death-(sids">Cir:Sudden Unexplained Death (SIDS</category>
+			<category domain="category" nicename="cir:sudi">Cir:SUDI</category>
+			<category domain="category" nicename="cir:sudc)">Cir:SUDC)</category>
+			<category domain="category" nicename="cir:cancer">Cir:Cancer</category>
+			<category domain="category" nicename="cir:substance-misuse-&amp;-addiction-age:50-65">Cir:Substance Misuse &amp; Addiction Age:50-65</category>
+			<category domain="category" nicename="age:65+">Age:65+</category>
+			<category domain="category" nicename="age:30-50-type:specialist-services">Age:30-50 Type:Specialist Services</category>
+			<category domain="category" nicename="type:counselling">Type:Counselling</category>
+			<content:encoded />
+			<wp:postmeta>
+				<wp:meta_key>_thumbnail_id</wp:meta_key>
+				<wp:meta_value>1001</wp:meta_value>
+			</wp:postmeta>
+		</item>
+	</channel>
+</rss>

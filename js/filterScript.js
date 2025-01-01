@@ -21,8 +21,8 @@ window.addEventListener("load", function () {
   let locationCat = [];
   let catType = [];
   let typeCat = [];
-  const itemsPerLoad = 50; // Number of items to load initially and for each "Load More"
-  // const jsonPath = "../services_converted.json";
+  const itemsPerLoad = 5; // Number of items to load initially and for each "Load More"
+  // const jsonPath = "https://arjun-testing-ataloss.squarespace.com/more-info/bereavement-services?format=json";
   const jsonPath = "../bereavement-services.json";
   const totalResultsElement = document.querySelector('.total-results span');
 
@@ -44,8 +44,9 @@ window.addEventListener("load", function () {
         catLocation = extractedData('Location:', item.categories).sort()
         catType = extractedData('Type:', item.categories).sort()
         requiredData = [{
-          "Title": item.title,
-          "Content": item.body,
+          "title": item.title,
+          "body": item.body,
+          "featured": item.starred,
           "catWho": catWho,
           "catCDeath": catCDeath,
           "catAgePerson": catAgePerson,
@@ -126,17 +127,24 @@ window.addEventListener("load", function () {
 
   function displayResults(data) {
     const regionalSection = document.querySelector('.regional-section-wrapper');
+    const nationalSection = document.querySelector('.national-section-wrapper');
+    const featuredSection = document.querySelector('.featured-section-wrapper');
     regionalSection.innerHTML = '';
+    nationalSection.innerHTML = '';
+    featuredSection.innerHTML = '';
 
     if (data.length === 0) {
       regionalSection.innerHTML = '<div class="no-results">No results found</div>';
-    } else {
-      const html = data.map(item => `
-        <div class="card border-0 border-bottom">
+      return;
+    }
+    // Iterate through filtered data and append to respective sections
+    data.forEach((item) => {
+      const card = `
+          <div class="card border-0 border-bottom">
           <div class="card-body">
-            <h5 class="card-title">${item.Title}</h5>
+            <h5 class="card-title">${item.title}</h5>
             <div class='card-text-description'>
-              <p class="card-text">${stripHtmlAndLimit(item.Content, 100) || 'No description available.'}</p>
+              <p class="card-text">${stripHtmlAndLimit(item.body, 100) || 'No description available.'}</p>
             </div>
             <button
               class="btn btn-primary read-more mt-3"
@@ -147,13 +155,18 @@ window.addEventListener("load", function () {
               Read More
             </button>
             <div class='card-description-hidden d-none' id="cardDescription">
-              ${item.Content || 'No description available.'}
+              ${item.body || 'No description available.'}
             </div>
           </div>
         </div>
-      `).join('');
-      regionalSection.innerHTML += html;
-    }
+      `;
+
+      if (item.featured) {
+        featuredSection.innerHTML += card;
+      } else {
+        regionalSection.innerHTML += card;
+      }
+    });
   }
 
   function stripHtmlAndLimit(text, limit) {
@@ -161,20 +174,16 @@ window.addEventListener("load", function () {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = text;
     const plainText = tempDiv.textContent || tempDiv.innerText || "";
-
     // Check if the text needs truncation
     if (plainText.length > limit) {
       // Find the last space within the limit to avoid cutting a word
       let truncatedText = plainText.substring(0, limit);
       const lastSpaceIndex = truncatedText.lastIndexOf(' ');
-
       if (lastSpaceIndex > -1) {
         truncatedText = truncatedText.substring(0, lastSpaceIndex);
       }
-
       return truncatedText + ' ...';
     }
-
     return plainText;
   }
 
