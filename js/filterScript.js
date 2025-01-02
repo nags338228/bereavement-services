@@ -7,6 +7,10 @@ window.addEventListener("load", function () {
     { key: "catLocation", selector: '.location select' },
   ];
 
+  const regionalSection = document.querySelector('.regional-section-wrapper');
+  const nationalSection = document.querySelector('.national-section-wrapper');
+  const featuredSection = document.querySelector('.featured-section-wrapper');
+
   let jsonData = [];
   let filteredData = [];
   let displayedData = [];
@@ -126,9 +130,6 @@ window.addEventListener("load", function () {
   }
 
   function displayResults(data) {
-    const regionalSection = document.querySelector('.regional-section-wrapper');
-    const nationalSection = document.querySelector('.national-section-wrapper');
-    const featuredSection = document.querySelector('.featured-section-wrapper');
     regionalSection.innerHTML = '';
     nationalSection.innerHTML = '';
     featuredSection.innerHTML = '';
