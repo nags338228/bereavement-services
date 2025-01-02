@@ -140,14 +140,14 @@ window.addEventListener("load", function () {
     // Iterate through filtered data and append to respective sections
     data.forEach((item) => {
       const card = `
-          <div class="card border-0 border-bottom">
+          <div class="card border-0 border-bottom flex-fill h-100">
           <div class="card-body">
             <h5 class="card-title">${item.title}</h5>
             <div class='card-text-description'>
               <p class="card-text">${stripHtmlAndLimit(item.body, 100) || 'No description available.'}</p>
             </div>
             <button
-              class="btn btn-primary read-more mt-3"
+              class="btn read-more mt-3 btn-outline-secondary"
               data-bs-toggle="modal"
               data-id="cardDescription"
               data-bs-target="#descriptionModal"
@@ -173,7 +173,8 @@ window.addEventListener("load", function () {
     // Create a temporary DOM element to strip HTML tags
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = text;
-    const plainText = tempDiv.textContent || tempDiv.innerText || "";
+    const plainTextNonTrimmed = tempDiv.textContent || tempDiv.innerText || "";
+    const plainText = plainTextNonTrimmed.trim();
     // Check if the text needs truncation
     if (plainText.length > limit) {
       // Find the last space within the limit to avoid cutting a word

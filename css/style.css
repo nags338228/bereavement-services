@@ -24,3 +24,13 @@ strong {
 .card-text-description {
 	font-family: "PlusJakartaSans-Light", Arial, sans-serif;
 }
+.regional-section-wrapper,
+.national-section-wrapper,
+.featured-section-wrapper {
+	max-height: 310px;
+}
+.regional-section-wrapper .card,
+.national-section-wrapper .card,
+.featured-section-wrapper .card {
+	min-height: 154.4px;
+}
